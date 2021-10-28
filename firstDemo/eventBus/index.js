@@ -7,12 +7,14 @@ const app=express();
 app.use(express.json()); 
 app.use(cors());
 
-app.post('/events', (req,res) => {
+app.post('/events', async (req,res) => {
     const event = req.body;
 
-    axios.post("http://localhost:8000/events",event);
-    axios.post("http://localhost:3001/events",event);
-    axios.post("http://localhost:3002/events",event);
+    await axios.post("http://localhost:8000/events",event); // post
+    await axios.post("http://localhost:3001/events",event); // comment
+    await axios.post("http://localhost:3002/events",event); // query
+    await axios.post("http://localhost:4003/events",event); // moderation
+
 
     res.send({
         status: "OK",
