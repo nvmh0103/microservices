@@ -7,9 +7,11 @@ const app=express();
 app.use(express.json()); 
 app.use(cors());
 
+const events = [];
+
 app.post('/events', async (req,res) => {
     const event = req.body;
-
+    events.push(event);
     await axios.post("http://localhost:8000/events",event); // post
     await axios.post("http://localhost:3001/events",event); // comment
     await axios.post("http://localhost:3002/events",event); // query
@@ -20,6 +22,15 @@ app.post('/events', async (req,res) => {
         status: "OK",
     });
 });
+
+app.get('/events', (req, res)=>{
+    try{
+        return res.send(events);
+    } catch (e){
+        return res.status(400).send(e);
+    }
+})
+
 
 app.listen(4005, () => {
     console.log("Listening on 4005!");
