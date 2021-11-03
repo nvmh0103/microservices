@@ -19,7 +19,7 @@ app.post("/post", async (req,res) => {
         id,title
     };
 
-    const request=await axios.post("http://localhost:4005/events",{
+    const request=await axios.post("http://event-bus-srv:4005/events",{
         type: "PostCreated",
         data: {
             id,
@@ -37,4 +37,5 @@ app.post('/events', (req,res) => {
 
 app.listen(8000, () => {
     console.log("Running at port 8000!");
+    console.log("v50");
 })

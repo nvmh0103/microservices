@@ -12,10 +12,10 @@ const events = [];
 app.post('/events', async (req,res) => {
     const event = req.body;
     events.push(event);
-    await axios.post("http://localhost:8000/events",event); // post
-    await axios.post("http://localhost:3001/events",event); // comment
-    await axios.post("http://localhost:3002/events",event); // query
-    await axios.post("http://localhost:4003/events",event); // moderation
+    await axios.post("http://posts-clusterip-srv:8000/events",event); // post
+    // await axios.post("http://localhost:3001/events",event); // comment
+    // await axios.post("http://localhost:3002/events",event); // query
+    // await axios.post("http://localhost:4003/events",event); // moderation
 
 
     res.send({
