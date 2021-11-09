@@ -11,7 +11,7 @@ app.get("/post",(req,res) => {
     res.send(post);
 })
 
-app.post("/post", async (req,res) => {
+app.post("/post/create", async (req,res) => {
     const id = randomBytes(4).toString('hex');
 
     const title = req.body.title;
@@ -26,7 +26,6 @@ app.post("/post", async (req,res) => {
             title,
         }
     });
-    console.log(request.data);
     res.status(201).send(post[id]);
 })
 
@@ -37,5 +36,4 @@ app.post('/events', (req,res) => {
 
 app.listen(8000, () => {
     console.log("Running at port 8000!");
-    console.log("v50");
 })
