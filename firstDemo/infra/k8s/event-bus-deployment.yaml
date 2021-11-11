@@ -15,7 +15,7 @@ spec:
       containers:
         - name: event-bus
           image: gcr.io/kubernetes-331801/event-bus
-        nodeSelector:
+        - nodeSelector:
           cloud.google.com/gke-nodepool: default-pool
 
 ---
