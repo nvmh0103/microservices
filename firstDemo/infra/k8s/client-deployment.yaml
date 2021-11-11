@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: nvmh0103/client
+          image: gcr.io/kubernetes-331801/client
 ---
 apiVersion: v1
 kind: Service

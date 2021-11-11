@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: comments
-          image: nvmh0103/comment
+          image: gcr.io/kubernetes-331801/comment
 ---
 apiVersion: v1
 kind: Service

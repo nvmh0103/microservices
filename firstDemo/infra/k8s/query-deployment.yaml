@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: query
-          image: nvmh0103/query
+          image: gcr.io/kubernetes-331801/query
 ---
 apiVersion: v1
 kind: Service
