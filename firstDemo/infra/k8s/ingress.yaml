@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-srv
+  name: nginx-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: "gce"
     nginx.ingress.kubernetes.io/use-regex: 'true'
     kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
 spec:
