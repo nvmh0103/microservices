@@ -9,28 +9,28 @@ spec:
   rules:
     - http:
         paths:
-          - path: "/post/create"
+          - path: /post/create
             pathType: Prefix
             backend:
               service:
                 name: posts-clusterip-srv
                 port:
                   number: 8000
-          - path: "/posts"
+          - path: /posts
             pathType: Prefix
             backend:
               service:
                 name: query-srv
                 port:
                   number: 3002
-          - path: "/post/?(.*)/comment"
+          - path: /post/?(.*)/comment
             pathType: Prefix
             backend:
               service:
                 name: comments-srv
                 port: 
                   number: 3001
-          - path: "/*"
+          - path: /*
             pathType: Prefix
             backend:
               service:
