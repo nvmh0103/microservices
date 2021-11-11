@@ -4,7 +4,6 @@ metadata:
   name: nginx-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    nginx.ingress.kubernetes.io/use-regex: 'true'
     kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
 spec:
   rules:
@@ -31,7 +30,7 @@ spec:
                 name: comments-srv
                 port: 
                   number: 3001
-          - path: "/*"
+          - path: "/"
             pathType: ImplementationSpecific
             backend:
               service:
