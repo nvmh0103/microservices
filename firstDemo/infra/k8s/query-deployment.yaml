@@ -15,6 +15,8 @@ spec:
       containers:
         - name: query
           image: gcr.io/kubernetes-331801/query
+        nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
 ---
 apiVersion: v1
 kind: Service
