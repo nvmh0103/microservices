@@ -12,11 +12,11 @@ spec:
       labels:
         app: client
     spec:
+      nodeSelector:
+          cloud.google.com/gke-nodepool: node-fe-pool
       containers:
         - name: client
           image: gcr.io/kubernetes-331801/client
-        nodeSelector:
-          cloud.google.com/gke-nodepool: node-fe-pool
 ---
 apiVersion: v1
 kind: Service

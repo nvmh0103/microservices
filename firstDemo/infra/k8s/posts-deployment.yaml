@@ -12,11 +12,11 @@ spec:
       labels:
         app: posts
     spec:
+      nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
       containers:
         - name: posts
           image: gcr.io/kubernetes-331801/post
-        nodeSelector:
-          cloud.google.com/gke-nodepool: default-pool
 ---
 apiVersion: v1
 kind: Service

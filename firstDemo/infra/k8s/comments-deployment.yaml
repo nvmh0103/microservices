@@ -12,11 +12,11 @@ spec:
       labels:
         app: comments
     spec:
+      nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
       containers:
         - name: comments
           image: gcr.io/kubernetes-331801/comment
-        nodeSelector:
-          cloud.google.com/gke-nodepool: default-pool
 ---
 apiVersion: v1
 kind: Service
