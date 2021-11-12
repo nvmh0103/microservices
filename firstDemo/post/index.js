@@ -5,9 +5,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 mongoose.connect('mongodb://mongo-post-0.mongo/posts',{
     useNewUrlParser: true,
-    useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
 }).then(message =>{
     console.log("connect successfully")
 }).catch(e => {
