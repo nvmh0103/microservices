@@ -1,10 +1,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
- name: mongo
+ name: mongo-post
 spec:
- serviceName: "mongo"
- replicas: 3
+ serviceName: "mongo-post"
+ replicas: 1
+ selector:
+    matchLabels:
+      app: posts
  template:
    metadata:
      labels:
