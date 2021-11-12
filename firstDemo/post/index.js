@@ -2,9 +2,22 @@ const express= require("express");
 const {randomBytes} = require("crypto");
 const cors = require("cors");
 const axios = require("axios");
+const mongoose = require("mongoose");
+mongoose.connect('mongodb://mongo-post-0.mongo/posts',{
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+}).then(message =>{
+    console.log("connect successfully")
+}).catch(e => {
+    console.log(e);
+})
 const app=express();
 app.use(express.json()); 
 app.use(cors());
+
+
 
 const post={};
 app.get("/post",(req,res) => {
