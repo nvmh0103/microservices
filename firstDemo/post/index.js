@@ -3,7 +3,7 @@ const {randomBytes} = require("crypto");
 const cors = require("cors");
 const axios = require("axios");
 const mongoose = require("mongoose");
-mongoose.connect('mongodb://mongo-post-0.mongo/posts',{
+mongoose.connect('mongodb://10.44.3.11:27017/posts',{
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(message =>{
