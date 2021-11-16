@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
- name: mongo-post
+ name: mongo-query
 spec:
- serviceName: "mongo-post"
+ serviceName: "mongo-query"
  replicas: 1
  selector:
     matchLabels:
-      role: mongo-post
+      role: mongo-query
  template:
    metadata:
      labels:
-       role: mongo-post
+       role: mongo-query
    spec:
      terminationGracePeriodSeconds: 10
      containers:
@@ -34,12 +34,12 @@ spec:
          image: cvallance/mongo-k8s-sidecar
          env:
            - name: MONGO_SIDECAR_POD_LABELS
-             value: "role=mongo-post"
+             value: "role=mongo-query"
  volumeClaimTemplates:
  - metadata:
      name: mongo-persistent-storage
      annotations:
-       volume.beta.kubernetes.io/storage-class: "post"
+       volume.beta.kubernetes.io/storage-class: "query"
    spec:
      accessModes: [ "ReadWriteOnce" ]
      resources:
