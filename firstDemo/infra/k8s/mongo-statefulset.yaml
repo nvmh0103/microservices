@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
- name: mongo-comment
+ name: mongo-post
 spec:
- serviceName: "mongo-comment"
+ serviceName: "mongo-post"
  replicas: 1
  selector:
     matchLabels:
-      role: mongo-comment
+      role: mongo-post
  template:
    metadata:
      labels:
-       role: mongo-comment
+       role: mongo-post
    spec:
      terminationGracePeriodSeconds: 10
      containers:
@@ -34,12 +34,12 @@ spec:
          image: cvallance/mongo-k8s-sidecar
          env:
            - name: MONGO_SIDECAR_POD_LABELS
-             value: "role=mongo-comment"
+             value: "role=mongo-post"
  volumeClaimTemplates:
  - metadata:
      name: mongo-persistent-storage
      annotations:
-       volume.beta.kubernetes.io/storage-class: "comment"
+       volume.beta.kubernetes.io/storage-class: "post"
    spec:
      accessModes: [ "ReadWriteOnce" ]
      resources:

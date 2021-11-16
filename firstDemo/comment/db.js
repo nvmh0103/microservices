@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect('mongodb://127.0.0.1:27017/comments',{
+mongoose.connect('mongodb://10.44.2.3:27017/comments',{
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(message =>{
