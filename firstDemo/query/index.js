@@ -2,36 +2,54 @@ const express= require("express");
 const cors = require("cors");
 const app=express();
 const axios = require("axios");
+require("./db");
+const query = require("./query");
 app.use(express.json()); 
 app.use(cors());
 
-var posts = {};
 
-app.get('/posts', (req, res) => {
-    res.send(posts);
+app.get('/posts', async (req, res) => {
+    const Query = await query.find();
+    res.send(Query);
 })
 
-const handleEvent= (type,data) => {
+const handleEvent= async (type,data) => {
     if (type == "PostCreated"){
-        const {id,title} = data;
-        posts[id] = {id, title, comment:[]};
+        const {title, _id} = data;
+        const newData = {
+            title,
+            id: _id,
+        }
+        const Query= new query(newData);
+        await Query.save() 
     }
 
     if (type == "CommentCreated"){
-        const {id,postId, content, status} = data;
-        const post = posts[postId];
-        const newComment = {id,content, status};
-        post.comment.push(newComment);
+        const {_id,postId, content, status} = data;
+        const Query = await query.findOne({id:postId});
+        const newComment = {
+            content,
+            status,
+            id:_id,
+        }
+        if (!Query.comment){
+            const newData = [];
+            newData.push(newComment);
+        } else {
+            Query.comment.push(newComment);
+        }
+         await Query.save();
     }
 
     if (type == "CommentUpdated"){
-        const {id, postId, content, status} =data;
-        const post = posts[postId];
-        const comments = post.comment.find(item => {
-            return item.id == id;
-        });
-        comments.status = status;
-        comments.content = content;
+        const {_id, postId, content, status} =data;
+        const Query = await query.findOne({id:postId});
+        const comment = Query.comment.filter(item => {
+            return item.id == _id;
+        })
+        comment[0].status = status;
+        comment[0].content = content;
+        await Query.save();
     }
 }
 
@@ -45,9 +63,9 @@ app.post('/events', (req,res) => {
 app.listen(3002, async () =>{
     console.log("Running on port 3002!");
 
-    const res = await axios.get('http://event-bus-srv:4005/events');
-    for (let event of res.data){
-        console.log("Processing event:", event.type);
-        handleEvent(event.type, event.data);
-    }
+    // const res = await axios.get('http://localhost:4005/events');
+    // for (let event of res.data){
+    //     console.log("Processing event:", event.type);
+    //     handleEvent(event.type, event.data);
+    // }
 })

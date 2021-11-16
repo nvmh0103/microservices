@@ -2,46 +2,34 @@ const express= require("express");
 const {randomBytes} = require("crypto");
 const cors = require("cors");
 const axios = require("axios");
-const mongoose = require("mongoose");
-mongoose.connect('mongodb://10.44.3.11:27017/posts',{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(message =>{
-    console.log("connect successfully")
-}).catch(e => {
-    console.log(e);
-})
+require('./db');
+const post = require("./post");
+
+
+
+
 const app=express();
 app.use(express.json()); 
 app.use(cors());
 
 
-
-const post={};
-app.get("/post",(req,res) => {
-    res.send(post);
+app.get("/post", async (req,res) => {
+    const posts = await post.find();
+    return res.send(posts);
 })
 
 app.post("/post/create", async (req,res) => {
-    const id = randomBytes(4).toString('hex');
 
-    const title = req.body.title;
-    post[id]={
-        id,title
-    };
-
+    const Post = new post(req.body);
+    await Post.save();
     const request=await axios.post("http://event-bus-srv:4005/events",{
         type: "PostCreated",
-        data: {
-            id,
-            title,
-        }
+        data: Post,
     });
-    res.status(201).send(post[id]);
+    res.status(201).send(Post);
 })
 
 app.post('/events', (req,res) => {
-    console.log("Received event:" , req.body);
     res.send({message: "Success"});
 })
 

@@ -2,6 +2,8 @@ const express= require("express");
 const {randomBytes} = require("crypto");
 const cors= require("cors");
 const axios = require("axios");
+require('./db')
+const comment = require("./comment");
 
 const app=express();
 app.use(express.json()); 
@@ -10,51 +12,36 @@ app.use(cors());
 
 const commentsByPostId={}
 
-app.get("/post/:id/comment",(req,res) => {
-    res.send(commentsByPostId[req.params.id] || []);
+app.get("/post/:id/comment",async (req,res) => {
+    const postId = req.params.id;
+    const comments = await comment.find({postId});
+    return res.send(comments);
 })
 
 app.post("/post/:id/comment", async (req,res) => {
-    const id = randomBytes(4).toString('hex');
-    const content = req.body.content;
-
-    const comments=commentsByPostId[req.params.id];
-    if (comments){
-        comments.push({id,content, status: "pending"});
-    } else {
-        commentsByPostId[req.params.id]=[{id,content, status: "pending"}];
+    const commentsData={
+        content: req.body.content,
+        postId: req.params.id,
+        status: "pending",
     }
+    const Comment = new comment(commentsData);
+    await Comment.save();
     await axios.post("http://event-bus-srv:4005/events",{
         type:"CommentCreated",
-        data:{
-            id,
-            content,
-            postId: req.params.id,
-            status: "pending"
-        }
+        data: Comment
     })
-    res.status(201).send(commentsByPostId[req.params.id]);
+    res.status(201).send(commentsData);
 })
 
 app.post('/events', async (req, res) => {
-    console.log("Received event: ", req.body);
     const {type, data} = req.body;
     if (type == "CommentModerated"){
-        const {postId, id, status, content} = data;
-        console.log(postId);
-        const comments = commentsByPostId[postId];
-        const comment = comments.find(comment =>{
-            return comment.id == id;
-        });
-        comment.status = status;
+        const Comment = await comment.findById(data._id);
+        Comment.status = data.status;
+        await Comment.save();
         await axios.post('http://event-bus-srv:4005/events', {
             type: "CommentUpdated",
-            data: {
-                id,
-                postId,
-                content,
-                status,
-            }
+            data: Comment,
         })
     }
     res.send({});
