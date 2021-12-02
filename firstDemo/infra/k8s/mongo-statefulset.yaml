@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
- name: mongo-query
+ name: mongo-test
 spec:
- serviceName: "mongo-query"
+ serviceName: "mongo-test"
  replicas: 1
  selector:
     matchLabels:
-      role: mongo-query
+      role: mongo-test
  template:
    metadata:
      labels:
-       role: mongo-query
+       role: mongo-test
    spec:
      terminationGracePeriodSeconds: 10
      containers:
@@ -34,12 +34,12 @@ spec:
          image: cvallance/mongo-k8s-sidecar
          env:
            - name: MONGO_SIDECAR_POD_LABELS
-             value: "role=mongo-query"
+             value: "role=mongo-test"
  volumeClaimTemplates:
  - metadata:
      name: mongo-persistent-storage
      annotations:
-       volume.beta.kubernetes.io/storage-class: "query"
+       volume.beta.kubernetes.io/storage-class: "test"
    spec:
      accessModes: [ "ReadWriteOnce" ]
      resources:
